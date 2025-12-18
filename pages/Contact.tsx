@@ -22,7 +22,9 @@ const ContactPage: React.FC = () => {
             {/* Address */}
             <div className="bg-white p-8 rounded-[2rem] border border-pink-100 shadow-sm">
               <div className="w-12 h-12 bg-primary/40 rounded-full flex items-center justify-center text-primary-text mb-4">
-                <MapPin size={24} />
+                <a target="blank_" href="https://www.google.com/maps/place/Gale%C5%A1njak/@43.9790841,15.3814958,1128m/data=!3m1!1e3!4m6!3m5!1s0x4761e04f538c63e7:0x50f2a3d385586140!8m2!3d43.9787249!4d15.3846242!16s%2Fm%2F06w1b4w?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D">
+                  <MapPin size={24} />
+                </a>
               </div>
               <h3 className="text-xl font-bold mb-2">Visítanos</h3>
               <p className="text-dark-secondary">
