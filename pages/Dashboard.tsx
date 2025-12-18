@@ -88,7 +88,7 @@ const getChannelsData = (theme: any) => ({
   legend: { bottom: '0%' },
   series: [
     {
-      name: 'Adquisición',
+      name: 'Captación',
       type: 'pie',
       radius: '50%',
       data: [
@@ -293,7 +293,7 @@ const Dashboard: React.FC = () => {
           />
           <StatCard 
             label="Ingresos" 
-            value="$45,200" 
+            value="$2'000.000 COP" 
             trend="12.5% vs mes anterior" 
             trendDirection="increase"
           />
@@ -328,7 +328,7 @@ const Dashboard: React.FC = () => {
           {/* Side Charts */}
           <VStack spacing={6}>
             <Box w="full" bg="white" rounded="2xl" shadow="sm" borderWidth="1px" borderColor="gray.100" p={6}>
-              <Heading as="h3" size="sm" color="gray.900" mb={4}>Tratamientos Populares</Heading>
+              <Heading as="h3" size="sm" color="gray.900" mb={4}>Tratamientos Populares %</Heading>
               <Box h="200px" w="full">
                 <ReactECharts 
                   ref={chart2Ref}
@@ -340,7 +340,7 @@ const Dashboard: React.FC = () => {
             </Box>
 
             <Box w="full" bg="white" rounded="2xl" shadow="sm" borderWidth="1px" borderColor="gray.100" p={6}>
-              <Heading as="h3" size="sm" color="gray.900" mb={4}>Canales de Adquisición</Heading>
+              <Heading as="h3" size="sm" color="gray.900" mb={4}>Canales de Captación %</Heading>
               <Box h="200px" w="full">
                 <ReactECharts 
                   ref={chart3Ref}
