@@ -57,7 +57,6 @@ const Hero: React.FC = () => {
               </button>
               <button href="#services" onClick={(e) => handleScrollClick(e, 'services')} className="w-full sm:w-auto bg-white border border-gray-200 hover:bg-gray-50 text-dark font-bold text-lg py-3.5 px-8 rounded-full transition-all">
                   Ver Servicios
-                
               </button>
             </div>
           </div>

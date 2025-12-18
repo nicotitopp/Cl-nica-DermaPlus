@@ -220,7 +220,7 @@ const Dashboard: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <Flex minH="100vh" bg="gray.50" fontFamily="sans">
+    <Flex minH="100vh" bg="gray.50">
       {/* Sidebar for Desktop */}
       <Box 
         as="aside"
