@@ -1,21 +1,44 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Calendar, 
-  Activity, 
-  Bell, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Users,
+  Calendar,
+  Activity,
+  Bell,
+  Settings,
   LogOut,
   Menu,
   X,
-  TrendingUp
+  TrendingUp,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import {
+  Box,
+  Flex,
+  VStack,
+  HStack,
+  Grid,
+  Heading,
+  Text,
+  IconButton,
+  Icon,
+  Avatar,
+  Drawer,
+  DrawerBody,
+  DrawerOverlay,
+  DrawerContent,
+  useDisclosure,
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  useTheme,
+} from '@chakra-ui/react';
 
-// Chart Data
-const patientsData = {
+// Chart Data (using Chakra theme colors)
+const getPatientsData = (theme: any) => ({
   tooltip: { trigger: 'axis' },
   grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
   xAxis: { type: 'category', data: ['Ene', 'Feb', 'Mar', 'Abr', 'May'] },
@@ -26,13 +49,13 @@ const patientsData = {
       type: 'line',
       smooth: true,
       data: [95, 140, 210, 260, 330],
-      itemStyle: { color: '#BE185D' }, // Pink 700
-      areaStyle: { color: 'rgba(255, 218, 227, 0.5)' } // #FFDAE3 with opacity
+      itemStyle: { color: theme.colors.pink[600] },
+      areaStyle: { color: theme.colors.pink[100] }
     }
   ]
-};
+});
 
-const treatmentsData = {
+const getTreatmentsData = (theme: any) => ({
   tooltip: { trigger: 'item' },
   legend: { top: '5%', left: 'center' },
   series: [
@@ -51,16 +74,16 @@ const treatmentsData = {
         label: { show: true, fontSize: '18', fontWeight: 'bold' }
       },
       data: [
-        { value: 40, name: 'Limpieza Facial', itemStyle: { color: '#FFDAE3' } },
-        { value: 25, name: 'Botox', itemStyle: { color: '#FBCFE8' } },
-        { value: 20, name: 'Láser', itemStyle: { color: '#F9A8D4' } },
-        { value: 15, name: 'Cuerpo', itemStyle: { color: '#F472B6' } }
+        { value: 40, name: 'Limpieza Facial', itemStyle: { color: theme.colors.pink[100] } },
+        { value: 25, name: 'Botox', itemStyle: { color: theme.colors.pink[200] } },
+        { value: 20, name: 'Láser', itemStyle: { color: theme.colors.pink[300] } },
+        { value: 15, name: 'Cuerpo', itemStyle: { color: theme.colors.pink[400] } }
       ]
     }
   ]
-};
+});
 
-const channelsData = {
+const getChannelsData = (theme: any) => ({
   tooltip: { trigger: 'item' },
   legend: { bottom: '0%' },
   series: [
@@ -69,9 +92,9 @@ const channelsData = {
       type: 'pie',
       radius: '50%',
       data: [
-        { value: 50, name: 'Sitio Web', itemStyle: { color: '#FFDAE3' } },
-        { value: 30, name: 'Anuncios IG', itemStyle: { color: '#F9A8D4' } },
-        { value: 20, name: 'Referidos', itemStyle: { color: '#FBCFE8' } }
+        { value: 50, name: 'Sitio Web', itemStyle: { color: theme.colors.pink[100] } },
+        { value: 30, name: 'Anuncios IG', itemStyle: { color: theme.colors.pink[300] } },
+        { value: 20, name: 'Referidos', itemStyle: { color: theme.colors.pink[200] } }
       ],
       emphasis: {
         itemStyle: {
@@ -82,26 +105,64 @@ const channelsData = {
       }
     }
   ]
-};
+});
+
 
 interface SidebarItemProps {
   icon: React.ElementType;
   label: string;
   active?: boolean;
+  to?: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, active = false }) => (
-  <div 
-    className={`flex items-center p-3 mx-4 rounded-lg cursor-pointer transition-all duration-200 ${
-      active 
-        ? "bg-primary text-gray-900 font-bold" 
-        : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 font-medium"
-    }`}
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, to = '#' }) => (
+  <Flex
+    as={Link}
+    to={to}
+    align="center"
+    p={3}
+    mx={4}
+    borderRadius="lg"
+    role="group"
+    cursor="pointer"
+    bg={active ? 'pink.500' : 'transparent'}
+    color={active ? 'white' : 'gray.600'}
+    fontWeight={active ? 'bold' : 'medium'}
+    transition="all 0.2s"
+    _hover={{
+      bg: 'pink.400',
+      color: 'white',
+    }}
   >
-    <Icon className="mr-4 w-5 h-5" />
-    <span>{label}</span>
-  </div>
+    <Icon as={icon} mr="4" fontSize="16" />
+    {label}
+  </Flex>
 );
+
+const SidebarContent = () => (
+    <Flex direction="column" h="full" py={8}>
+      <Box px={6} mb={8}>
+        <Heading as="h2" size="md" tracking="tight">
+          DermaPlus <Box as="span" color="pink.500">.</Box>
+        </Heading>
+        <Text fontSize="xs" color="gray.500" mt={1}>Gestión Interna</Text>
+      </Box>
+      
+      <VStack spacing={1} align="stretch">
+        <SidebarItem icon={LayoutDashboard} label="Resumen" active />
+        <SidebarItem icon={Users} label="Pacientes" />
+        <SidebarItem icon={Calendar} label="Citas" />
+        <SidebarItem icon={Activity} label="Rendimiento" />
+      </VStack>
+
+      <VStack spacing={1} align="stretch" mt="auto" pt={10}>
+        <Text px={6} fontSize="xs" fontWeight="bold" color="gray.400" textTransform="uppercase" mb={2}>Sistema</Text>
+        <SidebarItem icon={Settings} label="Ajustes" />
+        <SidebarItem icon={LogOut} label="Salir del Panel" to="/" />
+      </VStack>
+    </Flex>
+);
+
 
 interface StatCardProps {
   label: string;
@@ -111,33 +172,32 @@ interface StatCardProps {
   helpText?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, value, trend, trendDirection, helpText }) => (
-  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <div className="text-gray-500 text-sm font-medium mb-1">{label}</div>
-    <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>
+const StatCard: React.FC<StatCardProps> = ({ label, value, trend, trendDirection = 'increase', helpText }) => (
+  <Stat bg="white" rounded="2xl" shadow="sm" borderWidth="1px" borderColor="gray.100" p={6}>
+    <StatLabel color="gray.500" fontSize="sm" fontWeight="medium" mb={1}>{label}</StatLabel>
+    <StatNumber fontSize="2xl" fontWeight="bold" color="gray.900" mb={1}>{value}</StatNumber>
     {trend && (
-      <div className={`text-sm font-medium flex items-center ${trendDirection === 'decrease' ? 'text-red-500' : 'text-green-500'}`}>
-        <TrendingUp className="w-4 h-4 mr-1" />
+      <StatHelpText color={trendDirection === 'decrease' ? 'red.500' : 'green.500'}>
+        <Icon as={TrendingUp} w={4} h={4} mr={1} />
         {trend}
-      </div>
+      </StatHelpText>
     )}
     {helpText && (
-      <div className="text-xs font-bold text-gray-400 uppercase tracking-wide">
+      <Text fontSize="xs" fontWeight="bold" color="gray.400" textTransform="uppercase" mt={1}>
         {helpText}
-      </div>
+      </Text>
     )}
-  </div>
+  </Stat>
 );
 
 const Dashboard: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const theme = useTheme();
   
   // Refs for charts to handle resizing
   const chart1Ref = useRef<any>(null);
   const chart2Ref = useRef<any>(null);
   const chart3Ref = useRef<any>(null);
-
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   // Fix: Force resize charts after mount to ensure they fit container properly
   useEffect(() => {
@@ -147,7 +207,6 @@ const Dashboard: React.FC = () => {
       chart3Ref.current?.getEchartsInstance()?.resize();
     };
 
-    // Resize immediately and after a short delay for layout rendering
     const timer1 = setTimeout(resizeCharts, 50);
     const timer2 = setTimeout(resizeCharts, 500);
 
@@ -158,84 +217,74 @@ const Dashboard: React.FC = () => {
       clearTimeout(timer2);
       window.removeEventListener('resize', resizeCharts);
     };
-  }, [isSidebarOpen]);
+  }, [isOpen]);
 
   return (
-    <div className="min-h-screen bg-light-bg flex font-sans">
-      {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside 
-        className={`fixed md:sticky top-0 left-0 z-50 h-screen w-[250px] bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}
+    <Flex minH="100vh" bg="gray.50" fontFamily="sans">
+      {/* Sidebar for Desktop */}
+      <Box 
+        as="aside"
+        w="250px"
+        bg="white"
+        borderRight="1px"
+        borderColor="gray.200"
+        h="100vh"
+        position="sticky"
+        top="0"
+        display={{ base: 'none', md: 'block' }}
       >
-        <div className="flex flex-col h-full py-8">
-          <div className="px-6 mb-8 flex justify-between items-center">
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-gray-900">
-                DermaPlus <span className="text-primary-text">.</span>
-              </h2>
-              <p className="text-xs text-gray-500 mt-1">Gestión Interna</p>
-            </div>
-            <button className="md:hidden text-gray-500" onClick={() => setIsSidebarOpen(false)}>
-              <X size={20} />
-            </button>
-          </div>
-          
-          <div className="space-y-1">
-            <SidebarItem icon={LayoutDashboard} label="Resumen" active />
-            <SidebarItem icon={Users} label="Pacientes" />
-            <SidebarItem icon={Calendar} label="Citas" />
-            <SidebarItem icon={Activity} label="Rendimiento" />
-          </div>
+        <SidebarContent />
+      </Box>
 
-          <div className="mt-auto pt-10 space-y-1">
-            <div className="px-6 text-xs font-bold text-gray-400 uppercase mb-2">Sistema</div>
-            <SidebarItem icon={Settings} label="Ajustes" />
-            <Link to="/">
-              <SidebarItem icon={LogOut} label="Salir del Panel" />
-            </Link>
-          </div>
-        </div>
-      </aside>
+      {/* Sidebar for Mobile */}
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <SidebarContent />
+        </DrawerContent>
+      </Drawer>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 md:p-8 min-w-0 overflow-auto">
+      <Box as="main" flex="1" p={{ base: 4, md: 8 }} minW={0} overflow="auto">
         {/* Topbar */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-pink-100 mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center gap-4">
-            <button 
-              className="md:hidden text-gray-500"
-              onClick={toggleSidebar}
-            >
-              <Menu size={24} />
-            </button>
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">Bienvenida, Dra. Sarah</h1>
-              <p className="text-sm text-gray-500">Esto es lo que sucede hoy.</p>
-            </div>
-          </div>
+        <Flex
+          bg="white"
+          p={4}
+          rounded="xl"
+          shadow="sm"
+          borderWidth="1px"
+          borderColor="pink.100"
+          mb={8}
+          justify="space-between"
+          align="center"
+          wrap="wrap"
+          gap={4}
+        >
+          <HStack spacing={4}>
+            <IconButton
+              aria-label="Abrir menú"
+              icon={<Menu />}
+              onClick={onOpen}
+              display={{ md: 'none' }}
+              variant="ghost"
+            />
+            <Box>
+              <Heading as="h1" size="lg" color="gray.900">Bienvenida, Dra. Sarah</Heading>
+              <Text fontSize="sm" color="gray.500">Esto es lo que sucede hoy.</Text>
+            </Box>
+          </HStack>
 
-          <div className="flex items-center gap-4 self-end sm:self-auto">
-            <div className="relative cursor-pointer group">
-              <Bell className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
-              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-400 rounded-full border-2 border-white"></div>
-            </div>
-            <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-200">
-              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2" alt="Dra. Sarah" className="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
+          <HStack spacing={4}>
+            <Box position="relative" cursor="pointer">
+              <Icon as={Bell} w={5} h={5} color="gray.400" _hover={{ color: 'gray.600' }} />
+              <Box position="absolute" top="-2px" right="-2px" w="10px" h="10px" bg="red.400" rounded="full" borderWidth="2px" borderColor="white" />
+            </Box>
+            <Avatar size="sm" name="Dra. Sarah" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2" />
+          </HStack>
+        </Flex>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={8}>
           <StatCard 
             label="Pacientes Totales (May)" 
             value="330" 
@@ -259,52 +308,52 @@ const Dashboard: React.FC = () => {
             trend="Basado en 120 reseñas" 
             trendDirection="increase"
           />
-        </div>
+        </SimpleGrid>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Grid templateColumns={{ base: '1fr', lg: '2fr 1fr' }} gap={6}>
           {/* Main Chart */}
-          <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h3 className="text-sm font-bold text-gray-900 mb-4">Crecimiento de Pacientes (2024)</h3>
-            <div className="h-[300px] w-full">
+          <Box gridColumn={{ lg: 'span 2' }} bg="white" rounded="2xl" shadow="sm" borderWidth="1px" borderColor="gray.100" p={6}>
+            <Heading as="h3" size="sm" color="gray.900" mb={4}>Crecimiento de Pacientes (2025)</Heading>
+            <Box h="300px" w="full">
               <ReactECharts 
                 ref={chart1Ref}
-                option={patientsData} 
+                option={getPatientsData(theme)} 
                 style={{ height: '100%', width: '100%' }} 
                 opts={{ renderer: 'svg' }}
               />
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           {/* Side Charts */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <h3 className="text-sm font-bold text-gray-900 mb-4">Tratamientos Populares</h3>
-              <div className="h-[200px] w-full">
+          <VStack spacing={6}>
+            <Box w="full" bg="white" rounded="2xl" shadow="sm" borderWidth="1px" borderColor="gray.100" p={6}>
+              <Heading as="h3" size="sm" color="gray.900" mb={4}>Tratamientos Populares</Heading>
+              <Box h="200px" w="full">
                 <ReactECharts 
                   ref={chart2Ref}
-                  option={treatmentsData} 
+                  option={getTreatmentsData(theme)} 
                   style={{ height: '100%', width: '100%' }} 
                   opts={{ renderer: 'svg' }}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <h3 className="text-sm font-bold text-gray-900 mb-4">Canales de Adquisición</h3>
-              <div className="h-[200px] w-full">
+            <Box w="full" bg="white" rounded="2xl" shadow="sm" borderWidth="1px" borderColor="gray.100" p={6}>
+              <Heading as="h3" size="sm" color="gray.900" mb={4}>Canales de Adquisición</Heading>
+              <Box h="200px" w="full">
                 <ReactECharts 
                   ref={chart3Ref}
-                  option={channelsData} 
+                  option={getChannelsData(theme)} 
                   style={{ height: '100%', width: '100%' }} 
                   opts={{ renderer: 'svg' }}
                 />
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+              </Box>
+            </Box>
+          </VStack>
+        </Grid>
+      </Box>
+    </Flex>
   );
 };
 

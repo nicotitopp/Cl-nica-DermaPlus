@@ -26,8 +26,8 @@ const ContactPage: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Visítanos</h3>
               <p className="text-dark-secondary">
-                Calle Glow 123<br />
-                Beverly Hills, CA 90210
+                Calle 4A Sur<br />
+                Cali, Valle del Cauca
               </p>
             </div>
 
@@ -38,8 +38,8 @@ const ContactPage: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Información</h3>
               <p className="text-dark-secondary flex flex-col gap-2">
-                <a href="tel:5551234567" className="hover:text-primary-text transition-colors">(555) 123-4567</a>
-                <a href="mailto:hola@dermaplus.com" className="hover:text-primary-text transition-colors">hola@dermaplus.com</a>
+                <a href="tel:6021234567890" className="hover:text-primary-text transition-colors">(602) 123-4567-890</a>
+                <a href="mailto:noshe@dermaplus.com" className="hover:text-primary-text transition-colors">noshe@dermaplus.com</a>
               </p>
             </div>
 
@@ -67,7 +67,7 @@ const ContactPage: React.FC = () => {
           </div>
 
           {/* Form */}
-          <div className="lg:w-3/4">
+          <div className="lg:w-4/5 ">
             <ContactForm />
           </div>
 
