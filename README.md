@@ -105,7 +105,7 @@
   <h2>📦 Instalación y Uso</h2>
 
   <pre>
-git clone https://github.com/tu-usuario/dermaplus.git
+https://github.com/nicotitopp/Cl-nica-DermaPlus.git
 cd dermaplus
 npm install
 npm run dev
