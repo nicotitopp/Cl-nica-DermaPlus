@@ -1,0 +1,5 @@
+{
+  "name": "Clínico DermaPlus",
+  "description": "A premium multi-page app for a dermatology clinic featuring a landing page, contact page, and an internal analytics dashboard using Chakra UI and ECharts.",
+  "requestFramePermissions": []
+}

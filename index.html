@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DermaPlus - Revela tu Resplandor Natural</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Manrope', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                DEFAULT: '#FFDAE3', // User requested Pink
+                hover: '#FFC4D0',   // Slightly darker/richer pink for hover states
+                text: '#BE185D',    // Dark pink (pink-700) for text elements on light backgrounds
+              },
+              dark: {
+                DEFAULT: '#1A1A18',
+                secondary: '#5E4E50', // Warm brownish-grey to match pink
+              },
+              light: {
+                bg: '#FFFCFD', // Very light pinkish white for main background
+                card: '#FFF5F7', // Lavender Blush for cards
+                input: '#FFFBFC',
+              }
+            },
+            borderRadius: {
+              '4xl': '2.5rem',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #FFFCFD;
+        color: #1A1A18;
+        overflow-x: hidden;
+      }
+      /* Hide scrollbar for testimonials */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+</style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
