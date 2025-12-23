@@ -126,8 +126,7 @@ npm run dev
   <h2>✨ Autor</h2>
   <p>
     Desarrollado por <strong>Nico</strong><br />
-    Estudiante de Ingeniería / Desarrollo Web<br />
-    Prácticas profesionales – Transformación Digital
+    Estudiante de Desarrollo de Software<br />
   </p>
 
 </div>
